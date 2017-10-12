@@ -1,323 +1,307 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="1561">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
-</head>
-<body>
-<p class="p1">// ==UserScript==</p>
-<p class="p1">// @name <span class="Apple-converted-space">        </span>Pixel Bot 2ch</p>
-<p class="p1">// @namespace<span class="Apple-converted-space">    </span>http://tampermonkey.net/</p>
-<p class="p1">// @version<span class="Apple-converted-space">      </span>1.1.45</p>
-<p class="p1">// @description<span class="Apple-converted-space">  </span>try to take over the world!</p>
-<p class="p1">// @author <span class="Apple-converted-space">      </span>Flyink13, DarkKeks, xi</p>
-<p class="p1">// @match<span class="Apple-converted-space">        </span>https://pixel.vkforms.ru/*</p>
-<p class="p1">// @downloadURL<span class="Apple-converted-space">  </span>https://raw.githubusercontent.com/Extered/pixwars/master/PixelDefender.js</p>
-<p class="p1">// @updateURL<span class="Apple-converted-space">    </span>https://raw.githubusercontent.com/Extered/pixwars/master/PixelDefender.js</p>
-<p class="p1">// @grant<span class="Apple-converted-space">        </span>none</p>
-<p class="p1">// ==/UserScript==</p>
-<p class="p2"><br></p>
-<p class="p1">function MyAwesomePixelBot() {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>window.MyAwesomePixelBot = MyAwesomePixelBot;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.url = {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>script: 'https://raw.githubusercontent.com/Extered/pixwars/master/PixelDefender.js'</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.refreshTime = 300;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.pts = 30;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.tc = "rgb(0, 0, 0)";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.doCoordLog = true;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.currentUrl = '';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.urlGen = {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>script: function() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return MyAwesomePixelBot.url.script + '?v=' + Math.random()</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>image: function() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return new Promise(function(resolve, reject) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>fetch('https://raw.githubusercontent.com/Kulere/some/master/def.json').then(function(data) {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>data.json().then(function(answer){</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>resolve(answer.currentTarget);</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>}).catch(function(e) {</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>MyAwesomePixelBot.state.textContent = "E120: " + e;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>reject();</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}).catch(function(e){</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>MyAwesomePixelBot.state.textContent = "E121: " + e;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>resolve(MyAwesomePixelBot.currentUrl);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.state = document.createElement("div");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.state.onclick = MyAwesomePixelBot.reload;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.state.textContent = "Загрузка приложения...";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>Object.assign(MyAwesomePixelBot.state.style, {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>background: "rgba(0,0,0,0.5)",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>bottom: "0px",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>right: "0px",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>width: "100%",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>height: "100%",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>lineHeight: "500px",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>textAlign: "center",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>color: "#fff",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>position: "fixed",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>zIndex: 10000</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.body.appendChild(MyAwesomePixelBot.state);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.loger = document.createElement("div");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.loger.onclick = MyAwesomePixelBot.reload;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>Object.assign(MyAwesomePixelBot.loger.style, {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>background: "rgba(0,0,0,0)",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>top: "0px",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>left: "0px",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>width: "250px",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>height: "100%",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>color: "#fff",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>position: "fixed",</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>fontSize: "11px",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>padding: "12px",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>zIndex: 10001</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.body.appendChild(MyAwesomePixelBot.loger);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.log = function(x) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.loger.innerHTML += x + "&lt;br&gt;";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.loger.scrollTo(0, 10000)</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.setState = function(s) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.state.innerHTML = "MyAwesomePixelBot " + s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.log(s)</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.reloadImage = function() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.urlGen.image().then(function(url) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (!MyAwesomePixelBot.img) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>MyAwesomePixelBot.img = new Image();</p>
-<p class="p1"><span class="Apple-converted-space">                </span>MyAwesomePixelBot.img.crossOrigin = "Anonymous";</p>
-<p class="p1"><span class="Apple-converted-space">                </span>MyAwesomePixelBot.img.onload = function() {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>MyAwesomePixelBot.setState("перезагрузил зону защиты.");</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (MyAwesomePixelBot.inited) MyAwesomePixelBot.getFullData();</p>
-<p class="p1"><span class="Apple-converted-space">                </span>};</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (url != MyAwesomePixelBot.currentUrl) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>MyAwesomePixelBot.img.src = url;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>MyAwesomePixelBot.currentUrl = url;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.canvasEvent = function(type, q) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (!MyAwesomePixelBot.canvas)</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (type == "mousewheel") {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.canvas.dispatchEvent(new WheelEvent("mousewheel",q))</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.canvas.dispatchEvent(new MouseEvent(type,q))</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.canvasClick = function(x, y, color) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.resetZoom();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (x &gt; 1590) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.canvasMoveTo(1590, 0);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>x = x - 1590</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.canvasMoveTo(0, 0)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var q = {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>bubbles: true,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cancelable: true,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>button: 1,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>clientX: x,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>clientY: y + 1,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>layerX: x,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>layerY: y + 1</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var pxColor = MyAwesomePixelBot.getColor(MyAwesomePixelBot.ctx.getImageData(x, y + 1, 1, 1).data, 0);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var colorEl = document.querySelector('[style="background-color: ' + color + ';"]');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (!colorEl) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>console.log("color error %c " + color, 'background:' + color + ';');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.setState("Ошибка подбора цвета " + color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else if (pxColor == color) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (MyAwesomePixelBot.doCoordLog) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>console.log("== " + x + "x" + y + "%c " + pxColor, 'background:' + pxColor + ';');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>MyAwesomePixelBot.setState("Пропускаю " + (x + 1) + "x" + (y + 1) + " совпал цвет")</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>console.log("==");</p>
-<p class="p1"><span class="Apple-converted-space">                </span>MyAwesomePixelBot.setState("Пропускаю, совпал цвет")</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (MyAwesomePixelBot.doCoordLog) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>console.log(x + "x" + y + "%c " + pxColor + " -&gt; %c " + color, 'background:' + pxColor + ';', 'background:' + color + ';');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>MyAwesomePixelBot.setState("Поставил точку " + (x + 1) + "x" + (y + 1))</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>console.log(" -&gt; ");</p>
-<p class="p1"><span class="Apple-converted-space">                </span>MyAwesomePixelBot.setState("Поставил точку")</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>colorEl.click();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.canvasEvent("mousedown", q);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.canvasEvent("click", q);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>q.button = 0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.canvasEvent("mouseup", q);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.querySelector(".App__confirm button").click()</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.draw = function() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var px = MyAwesomePixelBot.pixs.shift();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (!px) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.setState("Точек нет")</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.canvasClick(px[0], px[1], px[2])</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.canvasMove = function(x, y) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var q = {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>bubbles: true,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cancelable: true,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>button: 1,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>clientX: 0,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>clientY: 0</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.canvasEvent("mousedown", q);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>q.clientY = y;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>q.clientX = x;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.canvasEvent("mousemove", q);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.canvasEvent("mouseup", q)</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.canvasMoveTo = function(x, y) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.canvasMove(10000, 10000);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.canvasMove(-40 - x, -149 - y)</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.getImageData = function() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var data = MyAwesomePixelBot.ctx.getImageData(0, 1, 1590, 400).data;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return data</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.getColor = function(data, i) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return "rgb(" + data[i] + ", " + data[i + 1] + ", " + data[i + 2] + ")"</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.getFullData = function() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.pixs = [];</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.pixs = MyAwesomePixelBot.randomShuffle(MyAwesomePixelBot.getData(0));</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.setState("осталось точек:" + MyAwesomePixelBot.pixs.length);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return MyAwesomePixelBot.pixs.length</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.getData = function(offsetX) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.resetZoom();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.canvasMoveTo(offsetX, 0);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var id1 = MyAwesomePixelBot.getImageData();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.ctx.drawImage(MyAwesomePixelBot.img, -offsetX, 1);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var id2 = MyAwesomePixelBot.getImageData();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var data = [];</p>
-<p class="p1"><span class="Apple-converted-space">        </span>for (var i = 0; i &lt; id1.length; i += 4) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>var x = offsetX + (i / 4) % 1590</p>
-<p class="p1"><span class="Apple-converted-space">              </span>, y = ~~((i / 4) / 1590);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (MyAwesomePixelBot.getColor(id1, i) !== MyAwesomePixelBot.getColor(id2, i) &amp;&amp; MyAwesomePixelBot.getColor(id2, i) !== MyAwesomePixelBot.tc) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>data.push([x, y, MyAwesomePixelBot.getColor(id2, i), MyAwesomePixelBot.getColor(id1, i)])</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return data</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.randomShuffle = function(data) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var currentIndex = data.length, temporaryValue, randomIndex;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>while (0 !== currentIndex) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>randomIndex = Math.floor(Math.random() * currentIndex);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>currentIndex -= 1;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>temporaryValue = data[currentIndex];</p>
-<p class="p1"><span class="Apple-converted-space">            </span>data[currentIndex] = data[randomIndex];</p>
-<p class="p1"><span class="Apple-converted-space">            </span>data[randomIndex] = temporaryValue</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return data</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.resetZoom = function() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.canvasEvent("mousewheel", {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>deltaY: 100000,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>deltaX: 0,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>clientX: 100,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>clientY: 100,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>})</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.init = function() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.inited = 1;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.getFullData();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.setState("Запущен.")</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.wait = setInterval(function() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (window.localStorage.getItem('DROP_FIRST_TIME') != '1') {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.querySelector(".App__advance &gt; .Button.primary").click();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else if (window.localStorage.getItem('DROP_HEADER') != '1') {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.querySelector(".Header__close").click();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else if (!MyAwesomePixelBot.inited &amp;&amp; MyAwesomePixelBot.canvas) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.ctx = MyAwesomePixelBot.canvas.getContext("2d");</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.init()</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else if (MyAwesomePixelBot.canvas &amp;&amp; document.querySelector(".Ttl__wait")) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.timer = 1</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else if (!MyAwesomePixelBot.canvas) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>var all = document.querySelectorAll("canvas");</p>
-<p class="p1"><span class="Apple-converted-space">            </span>for(var i = 0; i &lt; all.length; ++i) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if(all[i].style.display != 'none') {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>MyAwesomePixelBot.canvas = all[i];</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else if (!MyAwesomePixelBot.pts) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.reload();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.pts = 30</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else if (MyAwesomePixelBot.inited &amp;&amp; MyAwesomePixelBot.canvas) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.pts--;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>MyAwesomePixelBot.draw()</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}, 1000);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.refresh = setTimeout(function() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>location.reload()</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}, MyAwesomePixelBot.refreshTime * 1e3);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.reload = function() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.state.outerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>MyAwesomePixelBot.loger.outerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>clearInterval(MyAwesomePixelBot.wait);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var script = document.createElement('script');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>script.src = MyAwesomePixelBot.urlGen.script();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.body.appendChild(script)</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot.reloadImage();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>console.log("MyAwesomePixelBot loaded")</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">if (window.loaded) {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>MyAwesomePixelBot();</p>
-<p class="p1">} else {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>var inject = function() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>window.loaded = 1;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var script = document.createElement('script');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>script.appendChild(document.createTextNode('(' + MyAwesomePixelBot + ')();'));</p>
-<p class="p1"><span class="Apple-converted-space">        </span>(document.body || document.head || document.documentElement).appendChild(script);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>//if (document.readyState == 'complete') inject();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>window.addEventListener("load", function() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>inject();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p1">}</p>
-<p class="p1">window.alert = function(smth){document.location.reload();}</p>
-</body>
-</html>
+// ==UserScript==
+// @name         Pixel Bot 2ch
+// @namespace    http://tampermonkey.net/
+// @version      1.1.45
+// @description  try to take over the world!
+// @author       Flyink13, DarkKeks, xi
+// @match        https://pixel.vkforms.ru/*
+// @downloadURL  https://raw.githubusercontent.com/Extered/pixwars/master/PixelDefender.js
+// @updateURL    https://raw.githubusercontent.com/Extered/pixwars/master/PixelDefender.js
+// @grant        none
+// ==/UserScript==
+
+function MyAwesomePixelBot() {
+    window.MyAwesomePixelBot = MyAwesomePixelBot;
+    MyAwesomePixelBot.url = {
+        script: 'https://raw.githubusercontent.com/Extered/pixwars/master/PixelDefender.js'
+    };
+    MyAwesomePixelBot.refreshTime = 300;
+    MyAwesomePixelBot.pts = 30;
+    MyAwesomePixelBot.tc = "rgb(0, 0, 0)";
+    MyAwesomePixelBot.doCoordLog = true;
+    MyAwesomePixelBot.currentUrl = '';
+    MyAwesomePixelBot.urlGen = {
+        script: function() {
+            return MyAwesomePixelBot.url.script + '?v=' + Math.random()
+        },
+        image: function() {
+            return new Promise(function(resolve, reject) {
+                fetch('https://raw.githubusercontent.com/Kulere/some/master/def.json').then(function(data) {
+                        data.json().then(function(answer){
+                            resolve(answer.currentTarget);
+                        }).catch(function(e) {
+                            MyAwesomePixelBot.state.textContent = "E120: " + e;
+                            reject();
+                        });
+                }).catch(function(e){
+                    MyAwesomePixelBot.state.textContent = "E121: " + e;
+                    resolve(MyAwesomePixelBot.currentUrl);
+                });
+            });
+        }
+    };
+    MyAwesomePixelBot.state = document.createElement("div");
+    MyAwesomePixelBot.state.onclick = MyAwesomePixelBot.reload;
+    MyAwesomePixelBot.state.textContent = "Загрузка приложения...";
+    Object.assign(MyAwesomePixelBot.state.style, {
+        background: "rgba(0,0,0,0.5)",
+        bottom: "0px",
+        right: "0px",
+        width: "100%",
+        height: "100%",
+        lineHeight: "500px",
+        textAlign: "center",
+        color: "#fff",
+        position: "fixed",
+        zIndex: 10000
+    });
+    document.body.appendChild(MyAwesomePixelBot.state);
+    MyAwesomePixelBot.loger = document.createElement("div");
+    MyAwesomePixelBot.loger.onclick = MyAwesomePixelBot.reload;
+    Object.assign(MyAwesomePixelBot.loger.style, {
+        background: "rgba(0,0,0,0)",
+        top: "0px",
+        left: "0px",
+        width: "250px",
+        height: "100%",
+        color: "#fff",
+        position: "fixed",
+
+        fontSize: "11px",
+        padding: "12px",
+        zIndex: 10001
+    });
+    document.body.appendChild(MyAwesomePixelBot.loger);
+    MyAwesomePixelBot.log = function(x) {
+        MyAwesomePixelBot.loger.innerHTML += x + "<br>";
+        MyAwesomePixelBot.loger.scrollTo(0, 10000)
+    }
+    ;
+    MyAwesomePixelBot.setState = function(s) {
+        MyAwesomePixelBot.state.innerHTML = "MyAwesomePixelBot " + s;
+        MyAwesomePixelBot.log(s)
+    }
+    ;
+    MyAwesomePixelBot.reloadImage = function() {
+        MyAwesomePixelBot.urlGen.image().then(function(url) {
+            if (!MyAwesomePixelBot.img) {
+                MyAwesomePixelBot.img = new Image();
+                MyAwesomePixelBot.img.crossOrigin = "Anonymous";
+                MyAwesomePixelBot.img.onload = function() {
+                    MyAwesomePixelBot.setState("перезагрузил зону защиты.");
+                    if (MyAwesomePixelBot.inited) MyAwesomePixelBot.getFullData();
+                };
+            }
+            if (url != MyAwesomePixelBot.currentUrl) {
+                MyAwesomePixelBot.img.src = url;
+                MyAwesomePixelBot.currentUrl = url;
+            }
+        });
+    };
+    MyAwesomePixelBot.canvasEvent = function(type, q) {
+        if (!MyAwesomePixelBot.canvas)
+            return;
+        if (type == "mousewheel") {
+            MyAwesomePixelBot.canvas.dispatchEvent(new WheelEvent("mousewheel",q))
+        } else {
+            MyAwesomePixelBot.canvas.dispatchEvent(new MouseEvent(type,q))
+        }
+    }
+    ;
+    MyAwesomePixelBot.canvasClick = function(x, y, color) {
+        MyAwesomePixelBot.resetZoom();
+        if (x > 1590) {
+            MyAwesomePixelBot.canvasMoveTo(1590, 0);
+            x = x - 1590
+        } else {
+            MyAwesomePixelBot.canvasMoveTo(0, 0)
+        }
+        var q = {
+            bubbles: true,
+            cancelable: true,
+            button: 1,
+            clientX: x,
+            clientY: y + 1,
+            layerX: x,
+            layerY: y + 1
+        };
+        var pxColor = MyAwesomePixelBot.getColor(MyAwesomePixelBot.ctx.getImageData(x, y + 1, 1, 1).data, 0);
+        var colorEl = document.querySelector('[style="background-color: ' + color + ';"]');
+        if (!colorEl) {
+            console.log("color error %c " + color, 'background:' + color + ';');
+            MyAwesomePixelBot.setState("Ошибка подбора цвета " + color);
+            return
+        } else if (pxColor == color) {
+            if (MyAwesomePixelBot.doCoordLog) {
+                console.log("== " + x + "x" + y + "%c " + pxColor, 'background:' + pxColor + ';');
+                MyAwesomePixelBot.setState("Пропускаю " + (x + 1) + "x" + (y + 1) + " совпал цвет")
+            } else {
+                console.log("==");
+                MyAwesomePixelBot.setState("Пропускаю, совпал цвет")
+            }
+            return
+        } else {
+            if (MyAwesomePixelBot.doCoordLog) {
+                console.log(x + "x" + y + "%c " + pxColor + " -> %c " + color, 'background:' + pxColor + ';', 'background:' + color + ';');
+                MyAwesomePixelBot.setState("Поставил точку " + (x + 1) + "x" + (y + 1))
+            } else {
+                console.log(" -> ");
+                MyAwesomePixelBot.setState("Поставил точку")
+            }
+        }
+        colorEl.click();
+        MyAwesomePixelBot.canvasEvent("mousedown", q);
+        MyAwesomePixelBot.canvasEvent("click", q);
+        q.button = 0;
+        MyAwesomePixelBot.canvasEvent("mouseup", q);
+        document.querySelector(".App__confirm button").click()
+    }
+    ;
+    MyAwesomePixelBot.draw = function() {
+        var px = MyAwesomePixelBot.pixs.shift();
+        if (!px) {
+            MyAwesomePixelBot.setState("Точек нет")
+        } else {
+            MyAwesomePixelBot.canvasClick(px[0], px[1], px[2])
+        }
+    }
+    ;
+    MyAwesomePixelBot.canvasMove = function(x, y) {
+        var q = {
+            bubbles: true,
+            cancelable: true,
+            button: 1,
+            clientX: 0,
+            clientY: 0
+        };
+        MyAwesomePixelBot.canvasEvent("mousedown", q);
+        q.clientY = y;
+        q.clientX = x;
+        MyAwesomePixelBot.canvasEvent("mousemove", q);
+        MyAwesomePixelBot.canvasEvent("mouseup", q)
+    }
+    ;
+    MyAwesomePixelBot.canvasMoveTo = function(x, y) {
+        MyAwesomePixelBot.canvasMove(10000, 10000);
+        MyAwesomePixelBot.canvasMove(-40 - x, -149 - y)
+    }
+    ;
+    MyAwesomePixelBot.getImageData = function() {
+        var data = MyAwesomePixelBot.ctx.getImageData(0, 1, 1590, 400).data;
+        return data
+    }
+    ;
+    MyAwesomePixelBot.getColor = function(data, i) {
+        return "rgb(" + data[i] + ", " + data[i + 1] + ", " + data[i + 2] + ")"
+    }
+    ;
+    MyAwesomePixelBot.getFullData = function() {
+        MyAwesomePixelBot.pixs = [];
+        MyAwesomePixelBot.pixs = MyAwesomePixelBot.randomShuffle(MyAwesomePixelBot.getData(0));
+        MyAwesomePixelBot.setState("осталось точек:" + MyAwesomePixelBot.pixs.length);
+        return MyAwesomePixelBot.pixs.length
+    }
+    ;
+    MyAwesomePixelBot.getData = function(offsetX) {
+        MyAwesomePixelBot.resetZoom();
+        MyAwesomePixelBot.canvasMoveTo(offsetX, 0);
+        var id1 = MyAwesomePixelBot.getImageData();
+        MyAwesomePixelBot.ctx.drawImage(MyAwesomePixelBot.img, -offsetX, 1);
+        var id2 = MyAwesomePixelBot.getImageData();
+        var data = [];
+        for (var i = 0; i < id1.length; i += 4) {
+            var x = offsetX + (i / 4) % 1590
+              , y = ~~((i / 4) / 1590);
+            if (MyAwesomePixelBot.getColor(id1, i) !== MyAwesomePixelBot.getColor(id2, i) && MyAwesomePixelBot.getColor(id2, i) !== MyAwesomePixelBot.tc) {
+                data.push([x, y, MyAwesomePixelBot.getColor(id2, i), MyAwesomePixelBot.getColor(id1, i)])
+            }
+        }
+        return data
+    };
+
+    MyAwesomePixelBot.randomShuffle = function(data) {
+        var currentIndex = data.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = data[currentIndex];
+            data[currentIndex] = data[randomIndex];
+            data[randomIndex] = temporaryValue
+        }
+        return data
+    };
+
+    MyAwesomePixelBot.resetZoom = function() {
+        MyAwesomePixelBot.canvasEvent("mousewheel", {
+            deltaY: 100000,
+            deltaX: 0,
+            clientX: 100,
+            clientY: 100,
+        })
+    };
+
+    MyAwesomePixelBot.init = function() {
+        MyAwesomePixelBot.inited = 1;
+        MyAwesomePixelBot.getFullData();
+        MyAwesomePixelBot.setState("Запущен.")
+    };
+
+    MyAwesomePixelBot.wait = setInterval(function() {
+        if (window.localStorage.getItem('DROP_FIRST_TIME') != '1') {
+            document.querySelector(".App__advance > .Button.primary").click();
+        } else if (window.localStorage.getItem('DROP_HEADER') != '1') {
+            document.querySelector(".Header__close").click();
+        } else if (!MyAwesomePixelBot.inited && MyAwesomePixelBot.canvas) {
+            MyAwesomePixelBot.ctx = MyAwesomePixelBot.canvas.getContext("2d");
+            MyAwesomePixelBot.init()
+        } else if (MyAwesomePixelBot.canvas && document.querySelector(".Ttl__wait")) {
+            MyAwesomePixelBot.timer = 1
+        } else if (!MyAwesomePixelBot.canvas) {
+            var all = document.querySelectorAll("canvas");
+            for(var i = 0; i < all.length; ++i) {
+                if(all[i].style.display != 'none') {
+                    MyAwesomePixelBot.canvas = all[i];
+                }
+            }
+        } else if (!MyAwesomePixelBot.pts) {
+            MyAwesomePixelBot.reload();
+            MyAwesomePixelBot.pts = 30
+        } else if (MyAwesomePixelBot.inited && MyAwesomePixelBot.canvas) {
+            MyAwesomePixelBot.pts--;
+            MyAwesomePixelBot.draw()
+        }
+    }, 1000);
+
+    MyAwesomePixelBot.refresh = setTimeout(function() {
+        location.reload()
+    }, MyAwesomePixelBot.refreshTime * 1e3);
+
+    MyAwesomePixelBot.reload = function() {
+        MyAwesomePixelBot.state.outerHTML = "";
+        MyAwesomePixelBot.loger.outerHTML = "";
+        clearInterval(MyAwesomePixelBot.wait);
+        var script = document.createElement('script');
+        script.src = MyAwesomePixelBot.urlGen.script();
+        document.body.appendChild(script)
+    };
+
+    MyAwesomePixelBot.reloadImage();
+    console.log("MyAwesomePixelBot loaded")
+}
+
+if (window.loaded) {
+    MyAwesomePixelBot();
+} else {
+    var inject = function() {
+        window.loaded = 1;
+        var script = document.createElement('script');
+        script.appendChild(document.createTextNode('(' + MyAwesomePixelBot + ')();'));
+        (document.body || document.head || document.documentElement).appendChild(script);
+    };
+
+    //if (document.readyState == 'complete') inject();
+    window.addEventListener("load", function() {
+        inject();
+    });
+}
+window.alert = function(smth){document.location.reload();}
